@@ -1,0 +1,124 @@
+syntax = "proto3";
+
+package vector.v1;
+
+option go_package = "helloworld/api/vector/v1;v1";
+
+import "google/api/annotations.proto";
+
+message VectorPoint {
+  string id = 1;
+  string symbol = 2;
+  float close = 3;
+  repeated float max_vectors = 4;
+  repeated float ma_vectors = 5;
+  repeated float price_vectors = 6;
+  map<string, string> metadata = 7;
+}
+
+message IngestRequest {
+  string id = 1;
+  string symbol = 2;
+  float close = 3;
+  repeated float max_vectors = 4;
+  repeated float ma_vectors = 5;
+  repeated float price_vectors = 6;
+  map<string, string> metadata = 7;
+}
+
+message IngestResponse {
+  string id = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+  string symbol = 2;
+  optional float close = 3;
+  repeated float max_vectors = 4;
+  repeated float ma_vectors = 5;
+  repeated float price_vectors = 6;
+  map<string, string> metadata = 7;
+}
+
+message UpdateResponse {
+  string id = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+}
+
+message DeleteResponse {}
+
+message ListRequest {
+  string symbol = 1;
+  uint32 limit = 2;
+  uint32 offset = 3;
+}
+
+message ListResponse {
+  repeated VectorPoint items = 1;
+  uint32 total = 2;
+}
+
+message MetricWeight {
+  string name = 1;
+  float weight = 2;
+}
+
+message QuerySimilarRequest {
+  string symbol = 1;
+  uint32 top_k = 2;
+  repeated float max_vectors = 3;
+  repeated float ma_vectors = 4;
+  repeated float price_vectors = 5;
+  float close = 6;
+  repeated MetricWeight metrics = 7;
+}
+
+message QuerySimilarResponse {
+  repeated SearchResult results = 1;
+}
+
+message SearchResult {
+  string id = 1;
+  string symbol = 2;
+  float score = 3;
+  map<string, float> metric_scores = 4;
+  VectorPoint point = 5;
+}
+
+service VectorService {
+  rpc Ingest(IngestRequest) returns (IngestResponse) {
+    option (google.api.http) = {
+      post: "/api/vectors"
+      body: "*"
+    };
+  }
+
+  rpc Update(UpdateRequest) returns (UpdateResponse) {
+    option (google.api.http) = {
+      put: "/api/vectors/{id}"
+      body: "*"
+    };
+  }
+
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {
+    option (google.api.http) = {
+      delete: "/api/vectors/{id}"
+    };
+  }
+
+  rpc List(ListRequest) returns (ListResponse) {
+    option (google.api.http) = {
+      get: "/api/vectors"
+    };
+  }
+
+  rpc QuerySimilar(QuerySimilarRequest) returns (QuerySimilarResponse) {
+    option (google.api.http) = {
+      post: "/api/vectors/search"
+      body: "*"
+    };
+  }
+}
