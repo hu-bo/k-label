@@ -9,11 +9,11 @@ package main
 import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	"helloworld/internal/biz"
-	"helloworld/internal/conf"
-	"helloworld/internal/data"
-	"helloworld/internal/server"
-	"helloworld/internal/service"
+	"k-label/internal/biz"
+	"k-label/internal/conf"
+	"k-label/internal/data"
+	"k-label/internal/server"
+	"k-label/internal/service"
 )
 
 import (
