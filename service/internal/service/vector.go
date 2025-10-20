@@ -3,7 +3,7 @@ package service
 import (
 	"net/http"
 
-	"helloworld/internal/biz"
+	"klabel/internal/biz"
 
 	kratoshttp "github.com/go-kratos/kratos/v2/transport/http"
 )
@@ -39,6 +39,7 @@ type IngestRequest struct {
 	PriceVectors []float32         `json:"price_vectors"`
 	Metadata     map[string]string `json:"metadata"`
 }
+
 func (s *VectorService) Ingest(ctx kratoshttp.Context) error {
 	var req IngestRequest
 	if err := ctx.Bind(&req); err != nil {
@@ -54,28 +55,28 @@ func (s *VectorService) Ingest(ctx kratoshttp.Context) error {
 
 // Update updates an existing vector.
 func (s *VectorService) Update(ctx kratoshttp.Context) error {
-    var path DeleteRequest
-    if err := ctx.BindVars(&path); err != nil {
-        return err
-    }
-    var req UpdateRequest
-    if err := ctx.Bind(&req); err != nil {
-        return err
-    }
-    req.ID = path.ID
-    point := toBizPoint(&IngestRequest{
-        ID:           req.ID,
-        Symbol:       req.Symbol,
-        Close:        req.Close,
-        MaxVectors:   req.MaxVectors,
-        MAVectors:    req.MAVectors,
-        PriceVectors: req.PriceVectors,
-        Metadata:     req.Metadata,
-    })
-    if err := s.uc.Update(ctx, point); err != nil {
-        return err
-    }
-    return ctx.JSON(http.StatusOK, UpdateResponse{ID: req.ID})
+	var path DeleteRequest
+	if err := ctx.BindVars(&path); err != nil {
+		return err
+	}
+	var req UpdateRequest
+	if err := ctx.Bind(&req); err != nil {
+		return err
+	}
+	req.ID = path.ID
+	point := toBizPoint(&IngestRequest{
+		ID:           req.ID,
+		Symbol:       req.Symbol,
+		Close:        req.Close,
+		MaxVectors:   req.MaxVectors,
+		MAVectors:    req.MAVectors,
+		PriceVectors: req.PriceVectors,
+		Metadata:     req.Metadata,
+	})
+	if err := s.uc.Update(ctx, point); err != nil {
+		return err
+	}
+	return ctx.JSON(http.StatusOK, UpdateResponse{ID: req.ID})
 }
 
 type IngestResponse struct {

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"helloworld/internal/conf"
+	"klabel/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"

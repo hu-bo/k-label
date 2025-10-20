@@ -6,11 +6,11 @@
 package main
 
 import (
-	"k-label/internal/biz"
-	"k-label/internal/conf"
-	"k-label/internal/data"
-	"k-label/internal/server"
-	"k-label/internal/service"
+	"klabel/internal/biz"
+	"klabel/internal/conf"
+	"klabel/internal/data"
+	"klabel/internal/server"
+	"klabel/internal/service"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

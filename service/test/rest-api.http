@@ -1,0 +1,28 @@
+@localURL = http://127.0.0.1:8000
+
+### 查询所有
+GET {{localURL}}/vectors
+
+### 查询单个
+GET {{localURL}}/vector/1
+
+### 创建
+POST {{localURL}}/vector
+Content-Type: application/json
+
+{
+  "name": "test vector",
+  "value": 123
+}
+
+### 更新
+PUT {{localURL}}/vector/1
+Content-Type: application/json
+
+{
+  "name": "updated vector",
+  "value": 456
+}
+
+### 删除
+DELETE {{localURL}}/vector/1

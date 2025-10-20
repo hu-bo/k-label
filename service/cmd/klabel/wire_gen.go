@@ -9,11 +9,11 @@ package main
 import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	"k-label/internal/biz"
-	"k-label/internal/conf"
-	"k-label/internal/data"
-	"k-label/internal/server"
-	"k-label/internal/service"
+	"klabel/internal/biz"
+	"klabel/internal/conf"
+	"klabel/internal/data"
+	"klabel/internal/server"
+	"klabel/internal/service"
 )
 
 import (
@@ -23,15 +23,15 @@ import (
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(confServer *conf.Server, confData *conf.Data, confQdrant *conf.Qdrant, logger log.Logger) (*kratos.App, func(), error) {
-	dataData, cleanup, err := data.NewData(confData, confQdrant, logger)
+func wireApp(confServer *conf.Server, confData *conf.Data, qdrant *conf.Qdrant, logger log.Logger) (*kratos.App, func(), error) {
+	grpcServer := server.NewGRPCServer(confServer, logger)
+	dataData, cleanup, err := data.NewData(confData, qdrant, logger)
 	if err != nil {
 		return nil, nil, err
 	}
 	vectorRepo := data.NewVectorRepo(dataData, logger)
 	vectorUsecase := biz.NewVectorUsecase(vectorRepo, logger)
 	vectorService := service.NewVectorService(vectorUsecase)
-	grpcServer := server.NewGRPCServer(confServer, logger)
 	httpServer := server.NewHTTPServer(confServer, vectorService, logger)
 	app := newApp(logger, grpcServer, httpServer)
 	return app, func() {

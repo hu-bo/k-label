@@ -1,7 +1,7 @@
 package server
 
 import (
-	"helloworld/internal/conf"
+	"klabel/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"

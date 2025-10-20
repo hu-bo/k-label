@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	"helloworld/internal/biz"
+	"klabel/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/uuid"
@@ -171,9 +171,9 @@ func (r *vectorRepo) do(ctx context.Context, method, path string, payload any, o
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode >= http.StatusBadRequest {
-	buf := new(bytes.Buffer)
-	_, _ = buf.ReadFrom(resp.Body)
-	return fmt.Errorf("qdrant %s %s -> %d: %s", method, path, resp.StatusCode, buf.String())
+		buf := new(bytes.Buffer)
+		_, _ = buf.ReadFrom(resp.Body)
+		return fmt.Errorf("qdrant %s %s -> %d: %s", method, path, resp.StatusCode, buf.String())
 	}
 	if out == nil {
 		return nil
