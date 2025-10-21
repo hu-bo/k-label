@@ -11,5 +11,20 @@ services:
     environment:
       QDRANT__SERVICE__GRPC_PORT: 6334
       QDRANT__SERVICE__API_KEY: "kkkkkkk"
+  klabel:
+    image: cleanstart/go:latest
+    container_name: klabel
+    depends_on:
+      - qdrant
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+    volumes:
+      - ./configs:/data/conf
+    environment:
+      TZ: Asia/Shanghai
+      # 可添加更多环境变量，如数据库连接等
+    restart: always
+    command: ["./server", "-conf", "/data/conf"]
 volumes:
   qdrant_storage: {}
