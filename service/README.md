@@ -2,6 +2,7 @@
 
 ## Install Kratos
 ```
+go env -w GOPROXY=https://goproxy.cn
 go install github.com/go-kratos/kratos/cmd/kratos/v2@latest
 ```
 ## Create a service
@@ -37,12 +38,12 @@ go get github.com/google/wire/cmd/wire
 
 # generate wire
 cd cmd/server
-wire
 ```
 
 ## Docker
 ```bash
 # build
+```
 docker build -t <your-docker-image-name> .
 
 # run
