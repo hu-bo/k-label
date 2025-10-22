@@ -2,47 +2,6 @@
 
 Enterprise-grade stack: Go-Kratos gRPC backend + Qdrant vector DB + Ant Design Pro frontend. Supports docker-compose one-command deploy.
 
-## 背景
-将金融数据转为指标转为向量存储，你无需关注指标如何生成
-示例数据：
-```json
-{
-  "close": 111,
-  "symbol": "ETHUSDT",
-  "max_vertors": [10,20,30],
-  "ma_vertors": [1,0.1,0.2,0.3,0.6],
-  "price_vertors": [1,0.1,0.2,0.3,0.6]
-}
-```
-
-## ✅ 完成的功能
-
-### 后端 (Backend)
-- ✅ **Proto API**: `api/vector/v1/vector.proto` - 完整的 gRPC 接口定义
-  - Ingest(point) -> 存储指标 + 向量
-  - QuerySimilar(query, top_k, metrics=["cosine","manhattan"]) -> 最近邻搜索 (支持多相似度混合加权)
-  - Update(id, point) 更新向量
-  - Delete(id) -> 删除向量
-  - List(limit, offset) -> 分页列表
-- ✅ **向量嵌入**: `internal/biz/embedding.go` - 特征工程(示例)
-  - 标准化处理 (log变换, RSI归一化)
-  - 差值特征 (MA间差异)
-  - 比例特征 (MA/close比率)
-  - 归一维度拼接 -> 最终向量
-- ✅ **业务逻辑**: `internal/biz/vector_service.go` - 完整服务实现
-- ✅ **存储适配器**: 
-  - `internal/data/qdrant.go` - Qdrant向量数据库接口
-- ✅ **HTTP网关**: 内置REST API网关，gRPC -> HTTP转换
-- ✅ **统一服务**: `cmd/server/main.go` - gRPC(:9000) + HTTP(:8080)
-
-### 前端 (Frontend)
-- ✅ **项目框架**: Ant Design Pro + UmiJS + TypeScript
-- ✅ **API客户端**: `src/services/*Api.ts` - 完整REST API封装 (由 proto 生成)
-- ✅ **核心页面**:
-  - `VectorList.tsx` - 向量数据分页列表 + 删除
-  - `DataLabel.tsx` - 打标页面
-- ✅ **路由配置**: 完整的导航和布局
-
 
 ## 🚀 快速启动
 
