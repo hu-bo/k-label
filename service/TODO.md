@@ -33,7 +33,7 @@ https://pro.ant.design/zh-CN/docs/folder
 
 ## 功能列表
 
-### 后端 (Backend)
+### 后端 (Go-Kratos gRPC backend + Qdrant vector DB)
 -  **Proto API**: `api/vector/v1/vector.proto` - 完整的 gRPC 接口定义
   - Ingest -> 存储指标 + 向量
   - QuerySimilar(query, top_k, metrics=["cosine","manhattan"]) -> 最近邻搜索 (支持多相似度混合加权)
@@ -48,6 +48,7 @@ https://pro.ant.design/zh-CN/docs/folder
 -  **HTTP网关**: 内置REST API网关，gRPC -> HTTP转换
 -  **统一服务**: `cmd/klabel/main.go` - gRPC(:9000) + HTTP(:8080)
 -  **结构体** `internal/model/vector.go` 定义实体对象
+-  **工具方法** `internal/utils/*.go` 通用的工具方法
 
 ### 前端 (Frontend) 无需生成，忽略前端任务
 -
@@ -138,8 +139,9 @@ curl -X POST http://localhost:8080/api/vectors/search -H "Content-Type: applicat
 │   │   ├── grpc.go
 │   │   ├── http.go
 │   │   └── server.go
-│   └── service                # 实现了 api 定义的服务层，类似 DDD 的 application 层，处理 DTO 到 biz 领域实体的转换(DTO -> DO)，同时协同各类 biz 交互，但是不应处理复杂逻辑
+│   ├── service                # 实现了 api 定义的服务层，类似 DDD 的 application 层，处理 DTO 到 biz 领域实体的转换(DTO -> DO)，同时协同各类 biz 交互，但是不应处理复杂逻辑
 │       └── vector.go
+│   └── utils                  # 工具方法，如果有通用的方法抽离到此
 ├── test                       # 测试相关
 │   └── rest-api.http
 └── third_party                # 第三方 proto 依赖
