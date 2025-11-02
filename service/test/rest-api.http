@@ -1,28 +1,52 @@
-@localURL = http://127.0.0.1:8000
+@baseUrl = http://127.0.0.1:8000
 
-### 查询所有
-GET {{localURL}}/vectors
-
-### 查询单个
-GET {{localURL}}/vector/1
-
-### 创建
-POST {{localURL}}/vector
+### Ingest 新增向量
+POST {{baseUrl}}/api/vectors
 Content-Type: application/json
 
 {
-  "name": "test vector",
-  "value": 123
+  "id": "1",
+  "symbol": "AAPL",
+  "close": 123.45,
+  "max_vectors": [1.1, 2.2, 3.3],
+  "ma_vectors": [4.4, 5.5, 6.6],
+  "price_vectors": [7.7, 8.8, 9.9],
+  "metadata": {"source": "test"}
 }
 
-### 更新
-PUT {{localURL}}/vector/1
+### Update 更新向量
+PUT {{baseUrl}}/api/vectors/1
 Content-Type: application/json
 
 {
-  "name": "updated vector",
-  "value": 456
+  "id": "1",
+  "symbol": "AAPL",
+  "close": 234.56,
+  "max_vectors": [10.1, 11.2],
+  "ma_vectors": [12.3, 13.4],
+  "price_vectors": [14.5, 15.6],
+  "metadata": {"source": "update"}
 }
 
-### 删除
-DELETE {{localURL}}/vector/1
+### Delete 删除向量
+DELETE {{baseUrl}}/api/vectors/1
+
+### List 查询向量列表
+GET {{baseUrl}}/api/vectors?symbol=AAPL&limit=10&offset=0
+
+### QuerySimilar 相似向量搜索
+POST {{baseUrl}}/api/vectors/search
+Content-Type: application/json
+
+{
+  "symbol": "AAPL",
+  "top_k": 5,
+  "max_vectors": [1.1, 2.2, 3.3],
+  "ma_vectors": [4.4, 5.5, 6.6],
+  "price_vectors": [7.7, 8.8, 9.9],
+  "close": 123.45,
+  "metrics": [
+    {"name": "cosine", "weight": 0.8},
+    {"name": "euclidean", "weight": 0.2}
+  ]
+}
