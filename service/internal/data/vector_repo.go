@@ -163,7 +163,7 @@ func (r *vectorRepo) do(ctx context.Context, method, path string, payload any, o
 	}
 	req.Header.Set("Content-Type", "application/json")
 	if r.data.apiKey != "" {
-		req.Header.Set("api-key", r.data.apiKey)
+		req.Header.Set("Authorization", "Bearer "+r.data.apiKey)
 	}
 	resp, err := r.data.httpClient.Do(req)
 	if err != nil {
