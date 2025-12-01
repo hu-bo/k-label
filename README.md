@@ -1,80 +1,84 @@
 # Kline Vector Platform
 
-Enterprise-grade stack: Go-Kratos gRPC backend + Qdrant vector DB + Ant Design Pro frontend. Supports docker-compose one-command deploy.
+Enterprise-grade stack: midwayjs backend + Qdrant vector DB +  umi + ant-design-pro  frontend. Supports docker-compose one-command deploy.
+
+前端已经生成好的架子，但页面和功能需要你继续完善，后端，需要你创建 midwayjs + ts
+
+目标是构建一个精美、高性能、模块化的首页，包含以下核心功能：
+
+首页介绍（Hero 区域）
+K 线图展示（使用 klinecharts）
+POST /api/v1/klines
+
+市场策略列表（参考 OKX 交易机器人页面）
+GET /api/strategies (空接口逻辑暂时不用实现)
+
+数据打标模块（打标列表 + 打标详情页）
+POST /api/label/create (symbol, type)
+GET /api/label/list
+GET /api/label/{id}
+POST /api/label/update
 
 
-## 🚀 快速启动
+向量逻辑：
+POST /api/v1/vector-search
+POST /api/v1/vector/precompute   "methods": ["cosine", "euclidean", "pearson"]  // 需预计算的相似度方法(如果无法加速的的可以删除)
 
+## 📋 接口示例
 
-访问: http://localhost:8080
+POST /api/v1/vector-search
 
-## 📋 接口验证
+{
+  "query": {
+    "price_vec": [67200, 67350, 67100, 67400, 67500],
+    "rsi_vec": [55.2, 58.7, 52.1, 60.3, 62.8],
+    "volume_ratio_vec": [1.2, 1.5, 0.9, 2.1, 1.8]
+  },
+  "similarity_config": {
+    "price": {
+      "method": "cosine",       // 可选: cosine, euclidean, pearson
+      "weight": 0.5,
+      "normalize": true
+    },
+    "rsi": {
+      "method": "euclidean",
+      "weight": 0.3,
+      "normalize": false
+    },
+    "volume_ratio": {
+      "method": "euclidean",
+      "weight": 0.2,
+      "normalize": true
+    }
+  },
+  "top_k": 10,
+  "filters": {
+    "symbol": "BTC/USDT",
+    "period": "1h",
+    "start_time": 1700000000000,
+    "end_time": 1710000000000
+  }
+}
 
-```powershell
-# 新增向量
-curl -X POST http://localhost:8080/api/vectors -H "Content-Type: application/json" -d '{
-  "close": 111, "ma_15m": 10, "ma_4h": 20, "ma_1d": 30, "rsi": 46
-}'
-
-# 查询列表
-curl http://localhost:8080/api/vectors?limit=10
-
-# 相似度搜索
-curl -X POST http://localhost:8080/api/vectors/search -H "Content-Type: application/json" -d '{
-  "query": {"close": 110, "ma_15m": 12, "ma_4h": 22, "ma_1d": 32, "rsi": 48},
-  "top_k": 5
-}'
-```
-
-## 📁 项目结构
-
-
-## 🛠️ 代码生成与依赖
-
-### 1. 安装依赖
-
-- Go 相关：
-  ```powershell
-  go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-  go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-  go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
-  go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
-  ```
-- 安装 protoc（https://github.com/protocolbuffers/protobuf/releases）
-
-### 2. 生成 Go gRPC 及 HTTP 网关代码
-
-在项目根目录执行：
-
-```powershell
-protoc -I api/vector/v1 \
-  --go_out=paths=source_relative:api/vector/v1 \
-  --go-grpc_out=paths=source_relative:api/vector/v1 \
-  --grpc-gateway_out=paths=source_relative,grpc_api_configuration=api/vector/v1/vector.yaml:api/vector/v1 \
-  api/vector/v1/vector.proto
-```
-
-- 生成的 Go 代码和 HTTP 网关代码会在 `api/vector/v1/` 目录下。
-- 可选：生成 OpenAPI 文档
-
-```powershell
-protoc -I api/vector/v1 \
-  --openapiv2_out=api/vector/v1 \
-  api/vector/v1/vector.proto
-```
-
-### 3. 依赖包
-
-- `google.golang.org/grpc`
-- `github.com/grpc-ecosystem/grpc-gateway/v2`
-
-如需自动化脚本，可将上述命令写入 Makefile 或 PowerShell 脚本。
-
-## 🔄 后续优化 (可选)
-
-1. **Proto生成**: 
-2. **生产配置**: 环境变量 + 配置文件
-3. **前端打包**: `npm run build`优化
-4. **部署**: Docker化 + K8s编排
-
-**✨ 当前状态**: 功能完整，可直接运行和测试。前后端接口已对接，向量逻辑完备。
+{
+  "results": [
+    {
+      "id": "seg_8a3b2c",
+      "symbol": "BTC/USDT",
+      "period": "1h",
+      "timestamp": 1705000000000,
+      "similarity_score": 0.923,
+      "dimension_scores": {
+        "price": 0.95,
+        "rsi": 0.88,
+        "volume_ratio": 0.85
+      },
+      "metadata": {
+        "label": "buy",
+      }
+    },
+    // ... 其他 top_k 条结果
+  ],
+  "total_matched": 1240,
+  "query_time_ms": 42
+}
