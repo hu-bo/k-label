@@ -2,7 +2,9 @@
 
 Enterprise-grade stack: midwayjs backend + Qdrant vector DB +  umi + ant-design-pro  frontend. Supports docker-compose one-command deploy.
 
-前端已经生成好的架子，但页面和功能需要你继续完善，后端，需要你创建 midwayjs + ts
+
+umi + ant-design-pro: E:\Project\my-project\k-label\clinet
+midwayjs backend + Qdrant vector DB:  E:\Project\my-project\k-label\server
 
 目标是构建一个精美、高性能、模块化的首页，包含以下核心功能：
 
