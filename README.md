@@ -3,6 +3,23 @@
 Enterprise-grade stack: midwayjs backend + Qdrant vector DB +  umi + ant-design-pro  frontend. Supports docker-compose one-command deploy.
 
 
+Docker:
+
+- A `docker-compose.yml` is provided at the repo root that starts Qdrant, Qdrant UI, and the `server` service.
+- Copy `.env.example` to `.env` and adjust `QDRANT_URL` or `PORT` if needed.
+
+To run everything locally:
+
+```powershell
+cd e:\Project\my-project\k-label
+docker-compose up -d
+```
+
+- Qdrant HTTP API: `http://localhost:6333`
+- Qdrant UI (if available): `http://localhost:6334`
+- Server: `http://localhost:7001` (depends on service build/start)
+
+
 umi + ant-design-pro: E:\Project\my-project\k-label\clinet
 midwayjs backend + Qdrant vector DB:  E:\Project\my-project\k-label\server
 
