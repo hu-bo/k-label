@@ -6,7 +6,6 @@ Enterprise-grade stack: midwayjs backend + Qdrant vector DB +  umi + ant-design-
 Docker:
 
 - A `docker-compose.yml` is provided at the repo root that starts Qdrant, Qdrant UI, and the `server` service.
-- Copy `.env.example` to `.env` and adjust `QDRANT_URL` or `PORT` if needed.
 
 To run everything locally:
 
