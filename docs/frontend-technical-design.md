@@ -1041,26 +1041,7 @@ export default {
 };
 ```
 
-## 十、依赖清单
-
-```json
-{
-  "dependencies": {
-    "@ant-design/icons": "^5.2.6",
-    "@ant-design/pro-components": "^2.6.43",
-    "@umijs/max": "^4.0.87",
-    "antd": "^5.12.2",
-    "dayjs": "^1.11.10",
-    "klinecharts": "^9.8.6",
-    "lodash": "^4.17.21"
-  },
-  "devDependencies": {
-    "@types/lodash": "^4.14.202",
-    "@types/react": "^18.2.42",
-    "typescript": "^5.3.2"
-  }
-}
-```
+## 十、依赖清单(模板已生成/clinet)
 
 ## 十一、性能优化
 
